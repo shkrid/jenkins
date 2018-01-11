@@ -21,8 +21,12 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying....commented out'
+                echo 'docker-machine create --driver amazonec2 --amazonec2-access-key AKI******* --amazonec2-secret-key 8T93C******* aws-sandbox'
                 //sh 'docker-machine create --driver amazonec2 --amazonec2-access-key AKI******* --amazonec2-secret-key 8T93C******* aws-sandbox'
+                echo 'eval "$(docker-machine env aws-sandbox)"; docker run -d -p 80:80 shkrid/nginx-alpine:custom'
                 //sh 'eval "$(docker-machine env aws-sandbox)"; docker run -d -p 80:80 shkrid/nginx-alpine:custom'
+                echo 'Check nginx modules'
+                sh 'docker run --rm shkrid/nginx-alpine:custom nginx -V'
             }
         }
     }
