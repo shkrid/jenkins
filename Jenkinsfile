@@ -11,20 +11,19 @@ pipeline {
         stage('Dockerize') {
             steps {
                 echo 'Dockerize..'
-                sh 'env'
-                sh 'export TEST="1"'
-                sh 'env'
+                sh 'env; export TEST="1"; env || grep -i test'
                 sh 'docker build -t shkrid/nginx-alpine:custom -f Dockerfile-custom .'
-                sh 'docker login -u user -p pass || true'
-                sh 'docker push shkrid/nginx-alpine:custom || true'
+                withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+                    sh 'docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}'
+                    sh 'docker push shkrid/nginx-alpine:custom' 
+                }
             }
         }
         stage('Deploy') {
             steps {
-                echo 'Deploying....'
-                echo 'docker-machine create --driver virtualbox test'
-                echo 'eval "$(docker-machine env test)"'
-                echo 'docker run -d -p 80:80 shkrid/nginx-alpine:custom'
+                echo 'Deploying....Not implemented'
+                echo 'docker-machine create --driver amazonec2 --amazonec2-access-key AKI******* --amazonec2-secret-key 8T93C******* aws-sandbox'
+                echo 'eval "$(docker-machine env aws-sandbox)"; docker run -d -p 80:80 shkrid/nginx-alpine:custom'
             }
         }
     }
