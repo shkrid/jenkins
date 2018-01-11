@@ -5,19 +5,19 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building..'
-                docker version
+                sh 'docker version'
             }
         }
         stage('Dockerize') {
             steps {
                 echo 'Testing..'
-                docker version
+                sh 'docker version'
             }
         }
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
-                docker version
+                sh 'docker version'
             }
         }
     }
