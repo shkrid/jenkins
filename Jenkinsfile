@@ -5,7 +5,9 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building..'
+                sh 'env'
                 sh 'docker version'
+                sh 'docker build -t shkrid/nginx-alpine:base .'
             }
         }
         stage('Dockerize') {
