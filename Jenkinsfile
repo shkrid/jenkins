@@ -11,10 +11,10 @@ pipeline {
         stage('Dockerize') {
             steps {
                 echo 'Dockerize..'
-                sh 'env; export TEST="1"; env || grep -i test'
+                sh 'env; export TEST="1"; env | grep -i test'
                 sh 'docker build -t shkrid/nginx-alpine:custom -f Dockerfile-custom .'
                 withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
-                    sh 'docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}'
+                    sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
                     sh 'docker push shkrid/nginx-alpine:custom' 
                 }
             }
